@@ -47,7 +47,7 @@ class LivreurController extends Controller
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',
-            'matricule'=>'required',
+            // 'matricule'=>'required',
         ]);
 
             $livreur = Livreur::create([
@@ -59,7 +59,7 @@ class LivreurController extends Controller
                'engin'=>$request->engin,
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
-               'matricule'=>$request->matricule,
+            //    'matricule'=>$request->matricule,
             ]);
 
                 return response()->json('livreur enregistré avec success');
@@ -107,7 +107,7 @@ class LivreurController extends Controller
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',
-            'matricule'=>'required',
+            // 'matricule'=>'required',
         ]);
 
         $livreur_update=Livreur::find($request->id)->update($request->all());
