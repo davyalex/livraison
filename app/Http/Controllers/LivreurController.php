@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Livreur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 // use Symfony\Component\HttpFoundation\Response;
 
 class LivreurController extends Controller
@@ -47,6 +49,8 @@ class LivreurController extends Controller
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',
+            'password'=>'required|max:15',
+
             // 'matricule'=>'required',
         ]);
 
@@ -59,10 +63,12 @@ class LivreurController extends Controller
                'engin'=>$request->engin,
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
+               'password' => Hash::make($request->password),
             //    'matricule'=>$request->matricule,
             ]);
+            // $token = $livreur->createToken('auth_token')->plainTextToken;
 
-                return response()->json('livreur enregistré avec success');
+                return response()->json(['livreur enregistré avec success']);
                 
     }
 
@@ -75,6 +81,12 @@ class LivreurController extends Controller
     public function show($id)
     {
         //
+       
+    }
+
+    public function auth(){
+        $user = Auth::user();
+        return response()->json($user);
     }
 
     /**
@@ -107,6 +119,7 @@ class LivreurController extends Controller
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',
+            // 'password'=>'required|max:8',
             // 'matricule'=>'required',
         ]);
 

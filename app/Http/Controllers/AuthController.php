@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Livreur;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -87,22 +89,49 @@ class AuthController extends Controller
 
 public function login(Request $request){
 
-    $user = Livreur::whereContact($request->contact)->first();
+        //verification de l'email user entré
 
-    if ($user) {
-        return response()->json([
-            $user,
-            'connecté avec success'
-        ]);
+    $user = Livreur::whereContact($request->contact)
+    ->first();
+
+    //verification du mot de passe associé a l'email
+
+    if (!$user) {
+    return response()->json('mauvaises informations entréés');
+
+    } elseif (!Hash::check($request->password,  $user->password)) {
+       return response()->json('mauvaises informations entréés');
+       
     } else {
-        return response()->json('mauvaise information');
+        $token = $user->createToken('auth_token')->plainTextToken;
+      return response()->json(['Vous êtes connecté', $token, Auth::user() ]);
     }
+    
+  
+   
+
+    // if ($user) {
+    //     return response()->json([
+    //         $user,
+    //         'connecté avec success'
+    //     ]);
+    // } else {
+    //     return response()->json('mauvaise information');
+    // }
     
     
        
 
-    return response()->json($user);
+    return response()->json(Auth::user());
 
+}
+
+
+public function logout(Request $request){
+
+   Auth::user()->tokens()->delete();
+
+    return response()->json('deconnexion réussi');
 }
 
 }
