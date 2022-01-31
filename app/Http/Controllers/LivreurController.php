@@ -18,6 +18,8 @@ class LivreurController extends Controller
     public function index()
     {
         //
+        $liste_livreur = Livreur::all();
+        return response()->json($liste_livreur);
     }
 
     /**
@@ -45,7 +47,7 @@ class LivreurController extends Controller
             'prenom'=>'required',
             'contact'=>'required|unique:livreurs',
             'lieu_de_residence'=>'required',
-            'position_actuelle'=>'required',
+            // 'position_actuelle'=>'required',
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',
@@ -59,17 +61,34 @@ class LivreurController extends Controller
                'prenom'=>$request->prenom,
                'contact'=>$request->contact,
                'lieu_de_residence'=>$request->lieu_de_residence,
-               'position_actuelle'=>$request->position_actuelle,
+               'position_actuelle'=>'en attente',
                'engin'=>$request->engin,
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
                'password' => Hash::make($request->password),
             //    'matricule'=>$request->matricule,
             ]);
-            // $token = $livreur->createToken('auth_token')->plainTextToken;
+            $token = $livreur->createToken('auth_token')->plainTextToken;
 
-                return response()->json(['livreur enregistré avec success']);
+                return response()->json([
+                    'livreur enregistré avec success',
+                    $token
+            ]);
                 
+    }
+
+
+    public function position(Request $request){
+
+        $request->validate([
+            'position_actuelle'=>'required',
+        ]);
+
+        $position = Livreur::find($request->id)->update(["position_actuelle"=>$request->position_actuelle]);
+            return response()->json([
+                "position definie",
+                $position
+            ]);
     }
 
     /**
@@ -83,6 +102,8 @@ class LivreurController extends Controller
         //
        
     }
+
+
 
     public function auth(){
         $user = Auth::user();
@@ -115,7 +136,7 @@ class LivreurController extends Controller
             'prenom'=>'required',
             'contact'=>'required',
             'lieu_de_residence'=>'required',
-            'position_actuelle'=>'required',
+            // 'position_actuelle'=>'required',
             'engin'=>'required',
             'disponibilite'=>'required',
             'status'=>'required',

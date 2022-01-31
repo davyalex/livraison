@@ -23,9 +23,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //route pour livreur
+Route::post('/index', 'App\Http\Controllers\LivreurController@index')->name('index');
 Route::post('/store', 'App\Http\Controllers\LivreurController@store')->name('store');
+Route::post('/position', 'App\Http\Controllers\LivreurController@position')->name('position');
 Route::post('/update', 'App\Http\Controllers\LivreurController@update')->name('update')->middleware('auth:sanctum');
-Route::post('/auth', 'App\Http\Controllers\LivreurController@auth')->name('auth')->middleware('auth:sanctum');
+// Route::post('/auth', 'App\Http\Controllers\LivreurController@auth')->name('auth')->middleware('auth:sanctum');
 
 
 
