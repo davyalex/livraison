@@ -20,6 +20,7 @@ class Livreur extends Authenticatable
     'contact',
     'lieu_de_residence',
     'position_actuelle',
+    'position_precise',
     'engin',
     'disponibilite',
     'status',
