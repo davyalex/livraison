@@ -36,4 +36,8 @@ Route::post('/update', 'App\Http\Controllers\LivreurController@update')->name('u
 Route::post('/login', 'App\Http\Controllers\AuthController@login')->name('login');
 Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->name('logout')->middleware('auth:sanctum');
 
+//route infos engin
+Route::get('/engin/index', 'App\Http\Controllers\EnginController@index')->name('engin.index')->middleware('auth:sanctum');
+Route::post('/engin/store', 'App\Http\Controllers\EnginController@store')->name('engin.store')->middleware('auth:sanctum');
+Route::post('/engin/update', 'App\Http\Controllers\EnginController@update')->name('engin.update')->middleware('auth:sanctum');
 

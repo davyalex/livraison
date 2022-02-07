@@ -83,15 +83,21 @@ class LivreurController extends Controller
         $request->validate([
             'position_actuelle'=>'required',
         ]);
-
-        $position = Livreur::find($request->id)->update([
-            "position_actuelle"=>$request->position_actuelle,
-            "position_precise"=>$request->position_precise,
-        ]);
-            return response()->json([
-                "position definie",
-                $position
+        if (auth()->check()) {
+            $position = Livreur::find($request->id)->update([
+                "position_actuelle"=>$request->position_actuelle,
+                "position_precise"=>$request->position_precise,
             ]);
+                return response()->json([
+                    "position definie",
+                    $position
+                ]);
+        } else {
+            return response()->json('Vous n\'êtes pas connecté');
+        }
+        
+
+     
     }
 
     /**

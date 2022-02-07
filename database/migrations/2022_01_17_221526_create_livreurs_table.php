@@ -19,7 +19,9 @@ class CreateLivreursTable extends Migration
             $table->string('prenom');
             $table->string('contact')->unique();
             $table->string('lieu_de_residence');
-            $table->string('position_actuelle');
+            $table->string('position_actuelle')->nullable();
+            $table->string('position_precise')->nullable();
+            $table->string('password');
             $table->string('engin');
             $table->string('disponibilite')->nullable();;
             $table->string('status');
