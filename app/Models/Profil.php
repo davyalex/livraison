@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Profil extends Model implements HasMedia
 {
@@ -15,7 +16,8 @@ class Profil extends Model implements HasMedia
 
     protected $fillable=[
         'type_piece',
-        'livreur_id'
+        'livreur_id',
+        'numero_piece'
     ];
 
    /**

@@ -16,10 +16,10 @@ class CreateEnginsTable extends Migration
         Schema::create('engins', function (Blueprint $table) {
             $table->id();
             $table->string('type_engin')->nullable();
-            $table->string('immatriculation')->nullable();
+            $table->string('immatriculation')->unique()->nullable();
 
                 //clé entrangere du livreur
-            $table->foreignId('livreur_id')
+            $table->foreignId('livreur_id')->unique()
                     ->nullable()
                     ->references('id')
                     ->on('livreurs')

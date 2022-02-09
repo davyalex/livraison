@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Livreur;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;

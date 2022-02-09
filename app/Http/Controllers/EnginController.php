@@ -53,18 +53,21 @@ class EnginController extends Controller
         //
         $request->validate([
             // 'type_engin'=>'required',
-            'immatriculation'=>'required',
+            'immatriculation'=>'required|unique:engins',
         ]);
 
-            if (auth()->check()) {
+        $engin_existe = Engin::whereImmatriculation($request->immatriculation)
+        ->orWhere('livreur_id',Auth::user()->id)->first();
+            if (auth()->check() AND !$engin_existe ) {
                 $engin = Engin::create([
-                    'type_engin' => Auth::user()->engin,
+                    'type_engin' =>Auth::user()->engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
 
-            
-        if($request->file('img_immatriculation'))
+        // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin->type_engin]);
+
+        if($request->hasFile('img_immatriculation'))
         {
             $engin->addMediaFromRequest('img_immatriculation')
             ->toMediaCollection('img_immatriculation');
@@ -75,7 +78,7 @@ class EnginController extends Controller
                     $engin
                 ],200);
             } else {
-               return response()->json('Vous n\'êtes pas connecté');
+               return response()->json('Vous n\'êtes pas connecté ou engin existe déjà');
             }
             
      
@@ -113,7 +116,7 @@ class EnginController extends Controller
     public function update(Request $request)
     {
                  $request->validate([
-                     // 'type_engin'=>'required',
+                     'type_engin'=>'required',
                      'immatriculation'=>'required',
                  ]);
         //
@@ -123,13 +126,15 @@ class EnginController extends Controller
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
-                // if($request->file('img_immatriculation'))
-                // {
-                //     $engin->addMediaFromRequest('img_immatriculation')
-                //     ->toMediaCollection('img_immatriculation');
-                // }
 
-                $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
+                        if ($engin_update=Engin::find($request->id)) {
+                        $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
+                            $engin_update->clearMediaCollection('img_immatriculation');
+                            $engin_update->addMediaFromRequest('img_immatriculation')
+                            ->toMediaCollection('img_immatriculation');
+                        }
+               
+          
 
                 return response()->json([
                 $engin_update,

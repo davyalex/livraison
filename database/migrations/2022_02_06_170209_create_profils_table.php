@@ -16,9 +16,10 @@ class CreateProfilsTable extends Migration
         Schema::create('profils', function (Blueprint $table) {
             $table->id();
             $table->string('type_piece')->nullable();
+            $table->string('numero_piece')->unique()->nullable();
 
              //clé entrangere du livreur
-            $table->foreignId('livreur_id')
+            $table->foreignId('livreur_id')->unique()
             ->nullable()
             ->references('id')
             ->on('livreurs')
