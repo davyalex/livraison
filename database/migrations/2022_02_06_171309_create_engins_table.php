@@ -25,8 +25,8 @@ class CreateEnginsTable extends Migration
                     ->on('livreurs')
                     ->onDelete('set null')
                     ->onUpdate('cascade');
-                    $table->softDeletes();
                     $table->timestamps();
+                    $table->softDeletes();
         });
     }
 

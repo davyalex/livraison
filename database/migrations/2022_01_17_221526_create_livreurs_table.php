@@ -23,11 +23,11 @@ class CreateLivreursTable extends Migration
             $table->string('position_precise')->nullable();
             $table->string('password');
             $table->string('engin');
-            $table->string('disponibilite')->nullable();;
+            $table->json('disponibilite')->nullable();
             $table->string('status');
-            $table->string('matricule')->nullable();
-            $table->softDeletes();
+            // $table->string('matricule')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

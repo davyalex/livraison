@@ -18,7 +18,7 @@ class LivreurController extends Controller
     public function index()
     {
         //
-        $liste_livreur = Livreur::all();
+        $liste_livreur = Livreur::whereId(Auth::user()->id)->get();
         return response()->json($liste_livreur);
     }
 

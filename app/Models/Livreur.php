@@ -22,12 +22,16 @@ class Livreur extends Authenticatable implements HasMedia
     'contact',
     'lieu_de_residence',
     'position_actuelle',
+    'disponibilite',
     'position_precise',
     'engin',
-    'disponibilite',
     'status',
-    'matricule',
+    // 'matricule',
     'password'
+   ];
+
+   protected $casts = [
+    'disponibilite'=>'array',
    ];
 
 

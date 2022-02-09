@@ -29,12 +29,11 @@ Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->name('logo
 
 //route pour livreur
 Route::post('/livreur/store', 'App\Http\Controllers\LivreurController@store')->name('store');
-Route::post('/livreur/index', 'App\Http\Controllers\LivreurController@index')->name('index');
 Route::middleware(['auth:sanctum'])->group(function () {
-
+    
+Route::get('/livreur/index', 'App\Http\Controllers\LivreurController@index')->name('index');
 Route::post('/livreur/position', 'App\Http\Controllers\LivreurController@position')->name('position');
 Route::post('/livreur/update', 'App\Http\Controllers\LivreurController@update')->name('update');
-// Route::post('/auth', 'App\Http\Controllers\LivreurController@auth')->name('auth')->middleware('auth:sanctum');
 
 });
 
