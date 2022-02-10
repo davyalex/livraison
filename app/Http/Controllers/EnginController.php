@@ -134,8 +134,6 @@ class EnginController extends Controller
                             ->toMediaCollection('img_immatriculation');
                         }
                
-          
-
                 return response()->json([
                 $engin_update,
                 'modifié avec success'

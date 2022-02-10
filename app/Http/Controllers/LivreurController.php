@@ -66,7 +66,6 @@ class LivreurController extends Controller
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
                'password' => Hash::make($request->password),
-            //    'matricule'=>$request->matricule,
             ]);
             $token = $livreur->createToken('auth_token')->plainTextToken;
 
@@ -77,27 +76,30 @@ class LivreurController extends Controller
                 
     }
 
+    /** 
+     * 
+     * controller pour definir la position du livreur 
+     * 
+     * */
 
     public function position(Request $request){
 
         $request->validate([
             'position_actuelle'=>'required',
         ]);
-        if (auth()->check()) {
-            $position = Livreur::find($request->id)->update([
-                "position_actuelle"=>$request->position_actuelle,
-                "position_precise"=>$request->position_precise,
-            ]);
-                return response()->json([
-                    "position definie",
-                    $position
-                ]);
-        } else {
-            return response()->json('Vous n\'êtes pas connecté');
+
+        $position=Livreur::find($request->id);
+        $position_id =   $position ->id;
+        if (  $position_id == Auth::user()->id ) {
+            $position_update = Livreur::whereId(Auth::user() ->id)->update([
+                   "position_actuelle"=>$request->position_actuelle,
+                   "position_precise"=>$request->position_precise,
+               ]) ;  
+               return response()->json(["position definie"], 200);
+        } else if( $position_id != Auth::user() ->id) {
+           return response()->json('Vous n\'êtes pas connecté');
         }
         
-
-     
     }
 
     /**
@@ -150,10 +152,19 @@ class LivreurController extends Controller
             'disponibilite'=>'required',
             'status'=>'required',
             // 'password'=>'required|max:8',
-            // 'matricule'=>'required',
         ]);
 
-        $livreur_update=Livreur::find($request->id)->update($request->all());
+        $livreur_update=Livreur::find($request->id)->update([
+            'nom'=>$request->nom,
+               'prenom'=>$request->prenom,
+               'contact'=>$request->contact,
+               'lieu_de_residence'=>$request->lieu_de_residence,
+            //    'position_actuelle'=>'en attente',
+               'engin'=>$request->engin,
+               'disponibilite'=>$request->disponibilite,
+               'status'=>$request->status,
+            //    'password' => Hash::make($request->password),
+        ]);
              return response()->json([
                  $livreur_update,
              'modifié avec success'
