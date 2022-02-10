@@ -1,0 +1,11 @@
+postgres://vcalanivrtsyua:7a653d87339c0bd302231ec7df28bbf7358e7ec65b9845bc8e00617b71eb8230@ec2-54-209-221-231.compute-1.amazonaws.com:5432/d30kmvgisoemr9
+
+user=vcalanivrtsyua
+
+password = 7a653d87339c0bd302231ec7df28bbf7358e7ec65b9845bc8e00617b71eb8230
+
+host = ec2-54-209-221-231.compute-1.amazonaws.com
+
+port = 5432
+
+database = d30kmvgisoemr9
