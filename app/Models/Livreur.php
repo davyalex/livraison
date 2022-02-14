@@ -26,8 +26,10 @@ class Livreur extends Authenticatable implements HasMedia
     'position_precise',
     'engin',
     'status',
+    'quartier',
+    'password',
+    'nombre_de_vue'
     // 'matricule',
-    'password'
    ];
 
    protected $casts = [

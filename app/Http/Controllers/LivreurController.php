@@ -10,6 +10,20 @@ use Illuminate\Support\Facades\Hash;
 
 class LivreurController extends Controller
 {
+
+  /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function liste()
+    {
+        //
+        $liste_livreur = Livreur::get();
+        return response()->json($liste_livreur);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -18,8 +32,8 @@ class LivreurController extends Controller
     public function index()
     {
         //
-        $liste_livreur = Livreur::whereId(Auth::user()->id)->get();
-        return response()->json($liste_livreur);
+        $infos_livreur = Livreur::whereId(Auth::user()->id)->get();
+        return response()->json($infos_livreur);
     }
 
     /**
@@ -63,6 +77,7 @@ class LivreurController extends Controller
                'lieu_de_residence'=>$request->lieu_de_residence,
                'position_actuelle'=>'en attente',
                'engin'=>$request->engin,
+               'quartier'=>$request->quartier,
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
                'password' => Hash::make($request->password),
@@ -89,8 +104,8 @@ class LivreurController extends Controller
         ]);
 
         $position=Livreur::find($request->id);
-        $position_id =   $position ->id;
-        if (  $position_id == Auth::user()->id ) {
+        $position_id = $position ->id;
+        if ($position_id == Auth::user()->id ) {
             $position_update = Livreur::whereId(Auth::user() ->id)->update([
                    "position_actuelle"=>$request->position_actuelle,
                    "position_precise"=>$request->position_precise,
@@ -161,6 +176,7 @@ class LivreurController extends Controller
                'lieu_de_residence'=>$request->lieu_de_residence,
             //    'position_actuelle'=>'en attente',
                'engin'=>$request->engin,
+               'quartier'=>$request->quartier,
                'disponibilite'=>$request->disponibilite,
                'status'=>$request->status,
             //    'password' => Hash::make($request->password),
