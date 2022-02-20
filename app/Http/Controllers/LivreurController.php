@@ -26,7 +26,7 @@ class LivreurController extends Controller
             array_push($img_livreur,$img_profil_livreur);
         }
         return response()->json([
-            $liste_livreur,
+            'liste_livreur'=>$liste_livreur,
             'image_livreur'=>$img_livreur,
         ]);
     }
