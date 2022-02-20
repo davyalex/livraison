@@ -19,8 +19,16 @@ class LivreurController extends Controller
     public function liste()
     {
         //
-        $liste_livreur = Livreur::get();
-        return response()->json($liste_livreur);
+        $liste_livreur = Livreur::with('media')->get();
+        $img_livreur = [$liste_livreur];
+        for ($i=0; $i <count($liste_livreur) ; $i++) { 
+            $img_profil_livreur = $liste_livreur[$i]->getFirstMediaUrl('img_profil');
+            array_push($img_livreur,$img_profil_livreur);
+        }
+        return response()->json([
+            $liste_livreur,
+            'image_livreur'=>$img_livreur,
+        ]);
     }
 
 
