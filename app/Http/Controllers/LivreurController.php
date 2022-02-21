@@ -23,7 +23,7 @@ class LivreurController extends Controller
         $img_livreur = [$liste_livreur];
         for ($i=0; $i <count($liste_livreur) ; $i++) { 
             $img_profil_livreur = $liste_livreur[$i]->getFirstMediaUrl('img_profil');
-            array_push($img_livreur,$img_profil_livreur);
+            array_push($img_livreur,[$img_profil_livreur, $liste_livreur[$i]]); // A ce niveau j'ai fait un tableau [] dans lequel je met l'image $img_profil_livreur et le livreur qui correspond $liste_livreur[$i]
         }
         return response()->json([
             'liste_livreur'=>$liste_livreur,
