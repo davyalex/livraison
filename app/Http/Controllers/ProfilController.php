@@ -18,15 +18,26 @@ class ProfilController extends Controller
     {
         //
         if (auth()->check())  {
-            $piece = Profil::whereLivreur_id(Auth::user()->id)
+            $piece_verify = Profil::whereLivreur_id(Auth::user()->id)
             ->with(['media'])
-            ->get();
-            return response()->json([
-                $piece,
-                'photo_avant'=> $piece[0]->getFirstMediaUrl('img_piece_avant'),
-                'photo_arriere'=>$piece[0]->getFirstMediaUrl('img_piece_arriere')
+            ->first();
 
-                  ], 200);
+            if ( $piece_verify) {
+                $piece = Profil::whereLivreur_id(Auth::user()->id)
+                ->with(['media'])
+                ->get();
+
+                return response()->json([
+                    // $piece_verify 
+                    $piece,
+                    'photo_avant'=> $piece[0]->getFirstMediaUrl('img_piece_avant'),
+                    'photo_arriere'=>$piece[0]->getFirstMediaUrl('img_piece_arriere')
+    
+                      ], 200);
+            }else{
+                return response()->json(['message' =>'piece pas encore ajouté']);
+            }
+
           } else {
               return response()->json('Vous n\'êtes pas connecté');
           }

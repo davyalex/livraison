@@ -18,13 +18,21 @@ class EnginController extends Controller
     {
         
            if (auth()->check())  {
-          $livreur_engin = Engin::whereLivreur_id(Auth::user()->id)
-          ->with(['media','livreur'])
-          ->get();
-          return response()->json([
-              $livreur_engin,
-              'image'=> $livreur_engin[0]->getFirstMediaUrl('img_immatriculation')
-                ], 200);
+               $livreur_engin_verify =Engin::whereLivreur_id(Auth::user()->id)
+               ->with(['media','livreur'])
+               ->first();
+                    if ( $livreur_engin_verify) {
+                        $livreur_engin = Engin::whereLivreur_id(Auth::user()->id)
+                        ->with(['media','livreur'])
+                        ->get();
+                        return response()->json([
+                            $livreur_engin,
+                            'image'=> $livreur_engin[0]->getFirstMediaUrl('img_immatriculation')
+                              ], 200);
+                    }else {
+                        return response()->json(['message'=>'engin pas  encore enregistré']);
+                    }
+        
         } else {
             return response()->json('Vous n\'êtes pas connecté');
         }
