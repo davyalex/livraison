@@ -124,13 +124,13 @@ class EnginController extends Controller
     public function update(Request $request)
     {
                  $request->validate([
-                     'type_engin'=>'required',
+                    //  'type_engin'=>'required',
                      'immatriculation'=>'required',
                  ]);
         //
             if (auth()->check()) {
                 $engin_update=Engin::find($request->id)->update([
-                    'type_engin' => $request->type_engin,
+                    // 'type_engin' => $request->type_engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
