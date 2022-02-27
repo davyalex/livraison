@@ -19,7 +19,7 @@ class EnginController extends Controller
         
            if (auth()->check())  {
                $livreur_engin_verify =Engin::whereLivreur_id(Auth::user()->id)
-               ->with(['media','livreur'])
+               ->with(['media'])
                ->first();
                     if ( $livreur_engin_verify) {
                         $livreur_engin = Engin::whereLivreur_id(Auth::user()->id)
