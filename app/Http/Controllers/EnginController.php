@@ -68,7 +68,7 @@ class EnginController extends Controller
         ->orWhere('livreur_id',Auth::user()->id)->first();
             if (auth()->check() AND !$engin_existe ) {
                 $engin = Engin::create([
-                    'type_engin' =>Auth::user()->engin,
+                    // 'type_engin' =>Auth::user()->engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
@@ -124,19 +124,20 @@ class EnginController extends Controller
     public function update(Request $request)
     {
                  $request->validate([
-                     'type_engin'=>'required',
+                    //  'type_engin'=>'required',
                      'immatriculation'=>'required',
+                     
                  ]);
         //
             if (auth()->check()) {
                 $engin_update=Engin::find($request->id)->update([
-                    'type_engin' => $request->type_engin,
+                    // 'type_engin' => $request->type_engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
 
                         if ($engin_update=Engin::find($request->id)) {
-                        $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
+                        // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
                             $engin_update->clearMediaCollection('img_immatriculation');
                             $engin_update->addMediaFromRequest('img_immatriculation')
                             ->toMediaCollection('img_immatriculation');
