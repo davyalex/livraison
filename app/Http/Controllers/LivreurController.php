@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Engin;
+use App\Models\Profil;
 use App\Models\Livreur;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 // use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +22,37 @@ class LivreurController extends Controller
     public function liste()
     {
         //
-        $liste_livreur = Livreur::with('media')->get();
+       
+        $liste_livreur = Livreur::with('media','engin','profil')->get();
+        $liste_profil = Profil::with('media')->get();
+        $liste_engin = Engin::with('media')->get();
         $img_livreur = [];
 
-        for ($i=0; $i <count($liste_livreur) ; $i++) { 
-            $img_profil_livreur = $liste_livreur[$i]->getFirstMediaUrl('img_profil');
-            array_push($img_livreur,[$img_profil_livreur, $liste_livreur[$i]]); // A ce niveau j'ai fait un tableau [] dans lequel je met l'image $img_profil_livreur et le livreur qui correspond $liste_livreur[$i]
+        if (!$liste_livreur) {
+            return response()->json(['message'=>'livreur pas  encore enregistré']);
+        }elseif (!$liste_profil) {
+            return response()->json(['message'=>'profil pas  encore enregistré']);
+        }elseif (!$liste_engin) {
+            return response()->json(['message'=>'engin pas  encore enregistré']);
+        }else {
+            for ($i=0; $i <count($liste_livreur) ; $i++) { 
+                $img_profil_livreur = $liste_livreur[$i]->getFirstMediaUrl('img_profil');
+                $img_piece_avant = $liste_profil[$i]->getFirstMediaUrl('img_piece_avant');
+                $img_piece_arriere= $liste_profil[$i]->getFirstMediaUrl('img_piece_arriere');
+                $img_immatriculation= $liste_engin[$i]->getFirstMediaUrl('img_immatriculation');
+    
+                array_push($img_livreur,
+                [
+                'img_profil'=>$img_profil_livreur,
+                'img_piece_avant'=>$img_piece_avant, 
+                'img_piece_arriere'=>$img_piece_arriere,
+                'img_immatriculation'=>$img_immatriculation,
+                'livreur'=>$liste_livreur[$i]
+    
+            ]); // 
+            }
         }
+
         return response()->json([
             'liste_livreur'=>$liste_livreur,
             'image_livreur'=>$img_livreur,
@@ -41,8 +68,40 @@ class LivreurController extends Controller
     public function index()
     {
         //
-        $infos_livreur = Livreur::whereId(Auth::user()->id)->get();
-        return response()->json($infos_livreur);
+        $livreur_connecte = Livreur::whereId(Auth::user()->id)->with('media','engin','profil')->get();
+        $profil_connecte = Profil::whereId(Auth::user()->id)->with('media')->get();
+        $engin_connecte = Engin::whereId(Auth::user()->id)->with('media')->get();
+
+        $infos_livreur = [];
+
+        if (!$livreur_connecte) {
+            return response()->json(['message'=>'livreur pas  encore enregistré']);
+        }elseif (!$profil_connecte) {
+            return response()->json(['message'=>'profil pas  encore enregistré']);
+        }elseif (!$engin_connecte) {
+            return response()->json(['message'=>'engin pas  encore enregistré']);
+        }else {
+            for ($i=0; $i <count($livreur_connecte) ; $i++) { 
+                $img_profil_livreur = $livreur_connecte[$i]->getFirstMediaUrl('img_profil');
+                $img_piece_avant = $profil_connecte[$i]->getFirstMediaUrl('img_piece_avant');
+                $img_piece_arriere= $profil_connecte[$i]->getFirstMediaUrl('img_piece_arriere');
+                $img_immatriculation= $engin_connecte[$i]->getFirstMediaUrl('img_immatriculation');
+    
+                array_push($infos_livreur,
+                [
+                'img_profil'=>$img_profil_livreur,
+                'img_piece_avant'=>$img_piece_avant, 
+                'img_piece_arriere'=>$img_piece_arriere,
+                'img_immatriculation'=>$img_immatriculation,
+                'livreur'=>$livreur_connecte[$i]
+    
+            ]); // 
+            }
+        }
+
+        return response()->json([
+            'infos_livreur'=> $infos_livreur,
+        ]);
     }
 
     /**
