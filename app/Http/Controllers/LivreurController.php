@@ -24,8 +24,8 @@ class LivreurController extends Controller
         //
        
         $liste_livreur = Livreur::with('media','engin','profil')->get();
-        $liste_profil = Profil::with('media')->get();
-        $liste_engin = Engin::with('media')->get();
+        $liste_profil = Profil::with('media','livreur')->get();
+        $liste_engin = Engin::with('media','livreur')->get();
         $img_livreur = [];
 
         if (!$liste_livreur) {
@@ -37,19 +37,21 @@ class LivreurController extends Controller
         }else {
             for ($i=0; $i <count($liste_livreur) ; $i++) { 
                 $img_profil_livreur = $liste_livreur[$i]->getFirstMediaUrl('img_profil');
-                $img_piece_avant = $liste_profil[$i]->getFirstMediaUrl('img_piece_avant');
-                $img_piece_arriere= $liste_profil[$i]->getFirstMediaUrl('img_piece_arriere');
-                $img_immatriculation= $liste_engin[$i]->getFirstMediaUrl('img_immatriculation');
-    
-                array_push($img_livreur,
-                [
-                'img_profil'=>$img_profil_livreur,
-                'img_piece_avant'=>$img_piece_avant, 
-                'img_piece_arriere'=>$img_piece_arriere,
-                'img_immatriculation'=>$img_immatriculation,
-                'livreur'=>$liste_livreur[$i]
-    
-            ]); // 
+                $img_piece_avant = $liste_livreur[$i]->getFirstMediaUrl('img_piece_avant');
+                $img_piece_arriere= $liste_livreur[$i]->getFirstMediaUrl('img_piece_arriere');
+                $img_immatriculation= $liste_livreur[$i]->getFirstMediaUrl('img_immatriculation');
+                    array_push($img_livreur,
+                    [
+                    'img_profil'=>$img_profil_livreur,
+                    'img_piece_avant'=>$img_piece_avant, 
+                    'img_piece_arriere'=>$img_piece_arriere,
+                    'img_immatriculation'=>$img_immatriculation,
+                    'livreur'=>$liste_livreur[$i]
+        
+                ]); // 
+                // }
+                       
+               
             }
         }
 
@@ -68,11 +70,11 @@ class LivreurController extends Controller
     public function index()
     {
         //
-        $livreur_connecte = Livreur::whereId(Auth::user()->id)->with('media','engin','profil')->get();
-        $profil_connecte = Profil::whereId(Auth::user()->id)->with('media')->get();
-        $engin_connecte = Engin::whereId(Auth::user()->id)->with('media')->get();
+        $livreur_connecte = Livreur::whereId(Auth::user()->id)->with('media','profil','engin')->get();
+        $profil_connecte = Profil::whereId(Auth::user()->id)->with('media','livreur')->get();
+        $engin_connecte = Engin::whereId(Auth::user()->id)->with('media','livreur')->get();
 
-        $infos_livreur = [];
+      
 
         if (!$livreur_connecte) {
             return response()->json(['message'=>'livreur pas  encore enregistré']);
@@ -80,28 +82,20 @@ class LivreurController extends Controller
             return response()->json(['message'=>'profil pas  encore enregistré']);
         }elseif (!$engin_connecte) {
             return response()->json(['message'=>'engin pas  encore enregistré']);
-        }else {
-            for ($i=0; $i <count($livreur_connecte) ; $i++) { 
-                $img_profil_livreur = $livreur_connecte[$i]->getFirstMediaUrl('img_profil');
-                $img_piece_avant = $profil_connecte[$i]->getFirstMediaUrl('img_piece_avant');
-                $img_piece_arriere= $profil_connecte[$i]->getFirstMediaUrl('img_piece_arriere');
-                $img_immatriculation= $engin_connecte[$i]->getFirstMediaUrl('img_immatriculation');
-    
-                array_push($infos_livreur,
-                [
-                'img_profil'=>$img_profil_livreur,
-                'img_piece_avant'=>$img_piece_avant, 
-                'img_piece_arriere'=>$img_piece_arriere,
-                'img_immatriculation'=>$img_immatriculation,
-                'livreur'=>$livreur_connecte[$i]
-    
-            ]); // 
-            }
         }
+        else {
+       
+            return response()->json([
+                'infos_livreur'=> $livreur_connecte,
 
-        return response()->json([
-            'infos_livreur'=> $infos_livreur,
-        ]);
+                'img_profil'=> $livreur_connecte[0]->getFirstMediaUrl('img_profil'),
+                'img_piece_avant'=> $livreur_connecte[0]->getFirstMediaUrl('img_piece_avant'),
+                'img_piece_arriere'=> $livreur_connecte[0]->getFirstMediaUrl('img_piece_arriere'),
+                'img_immatriculation'=> $livreur_connecte[0]->getFirstMediaUrl('img_immatriculation'),
+               
+            ]);
+    }
+
     }
 
     /**
