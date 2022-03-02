@@ -26,7 +26,7 @@ class LivreurController extends Controller
         $liste_livreur = Livreur::with('media','engin','profil')->get();
         $liste_profil = Profil::with('media','livreur')->get();
         $liste_engin = Engin::with('media','livreur')->get();
-        $img_livreur = [];
+        $all_livreur = [];
 
         if (!$liste_livreur) {
             return response()->json(['message'=>'livreur pas  encore enregistré']);
@@ -40,7 +40,7 @@ class LivreurController extends Controller
                 $img_piece_avant = $liste_livreur[$i]->getFirstMediaUrl('img_piece_avant');
                 $img_piece_arriere= $liste_livreur[$i]->getFirstMediaUrl('img_piece_arriere');
                 $img_immatriculation= $liste_livreur[$i]->getFirstMediaUrl('img_immatriculation');
-                    array_push($img_livreur,
+                    array_push($all_livreur,
                     [
                     'img_profil'=>$img_profil_livreur,
                     'img_piece_avant'=>$img_piece_avant, 
@@ -57,7 +57,7 @@ class LivreurController extends Controller
 
         return response()->json([
             // 'liste_livreur'=>$liste_livreur,
-            'image_livreur'=>$img_livreur,
+            'all_livreur'=>$all_livreur,
         ]);
     }
 
