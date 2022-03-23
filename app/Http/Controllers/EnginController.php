@@ -19,18 +19,18 @@ class EnginController extends Controller
         
            if (auth()->check())  {
                $livreur_engin_verify =Engin::whereLivreur_id(Auth::user()->id)
-               ->with(['media'])
+               ->with(['media','livreur'])
                ->first();
                     if ( $livreur_engin_verify) {
-                        $livreur_engin = Engin::whereLivreur_id(Auth::user()->id)
-                        ->with(['media','livreur'])
+                        $livreur_engin = livreur::whereId(Auth::user()->id)
+                        ->with(['media','engin'])
                         ->get();
                         return response()->json([
                             $livreur_engin,
                             'image'=> $livreur_engin[0]->getFirstMediaUrl('img_immatriculation')
                               ], 200);
                     }else {
-                        return response()->json(['message'=>'engin pas  encore enregistré']);
+                        return response()->json(['message'=>'engin pas encore enregistré']);
                     }
         
         } else {
@@ -73,13 +73,19 @@ class EnginController extends Controller
                     'livreur_id' => Auth::user()->id,
                 ]);
 
-        // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin->type_engin]);
+                $livreur = Livreur::whereId(Auth::user()->id)->first();
+                if ($livreur) {
+                    if($request->hasFile('img_immatriculation'))
+                    {
+                        $livreur->addMediaFromRequest('img_immatriculation')
+                        ->toMediaCollection('img_immatriculation');
+                    }
+                }else {
+                    return response()->json('Vous n\'êtes pas connecté');
+                }
+                    
 
-        if($request->hasFile('img_immatriculation'))
-        {
-            $engin->addMediaFromRequest('img_immatriculation')
-            ->toMediaCollection('img_immatriculation');
-        }
+        // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin->type_engin]);
 
                 return response()->json([
                     'message'=>'Engin ajouté avec success',
@@ -136,13 +142,16 @@ class EnginController extends Controller
                     'livreur_id' => Auth::user()->id,
                 ]);
 
+                // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
                         if ($engin_update=Engin::find($request->id)) {
-                        // $engin_modify = Livreur::whereId(Auth::user()->id)->update(['engin'=> $engin_update->type_engin]);
-                            $engin_update->clearMediaCollection('img_immatriculation');
-                            $engin_update->addMediaFromRequest('img_immatriculation')
+                            $livreur_engin_update = Livreur::whereId(Auth::user()->id)->first();
+                            if ($livreur_engin_update) {
+                                $livreur_engin_update->clearMediaCollection('img_immatriculation');
+                                $livreur_engin_update->addMediaFromRequest('img_immatriculation')
                             ->toMediaCollection('img_immatriculation');
+                            }
                         }
-               
+        
                 return response()->json([
                 $engin_update,
                 'modifié avec success'

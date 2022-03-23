@@ -23,8 +23,8 @@ class ProfilController extends Controller
             ->first();
 
             if ( $piece_verify) {
-                $piece = Profil::whereLivreur_id(Auth::user()->id)
-                ->with(['media'])
+                $piece = Livreur::whereId(Auth::user()->id)
+                ->with(['media','profil'])
                 ->get();
 
                 return response()->json([
@@ -53,9 +53,6 @@ class ProfilController extends Controller
             return response()->json([
                 $image_profil,
                 'image_profil'=> $image_profil[0]->getFirstMediaUrl('img_profil'),
-                // 'photo_avant'=> $profil[0]->getFirstMediaUrl('img_piece_avant'),
-                // 'photo_arriere'=> $profil[0]->getFirstMediaUrl('img_piece_arriere')
-
                   ], 200);
           } else {
               return response()->json('Vous n\'êtes pas connecté');
@@ -97,19 +94,25 @@ class ProfilController extends Controller
                 ]);
 
 
-        //ajout de la piece avant
-        if($request->hasFile('img_piece_avant'))
-        {
-            $profil->addMediaFromRequest('img_piece_avant')
-            ->toMediaCollection('img_piece_avant');
-        }
+        
 
-         //ajout de la piece arriere
-         if($request->hasFile('img_piece_arriere'))
-         {
-             $profil->addMediaFromRequest('img_piece_arriere')
-             ->toMediaCollection('img_piece_arriere');
-         }
+        $livreur = Livreur::whereId(Auth::user()->id)->first();
+                if ($livreur) {
+                    
+                    //ajout de la piece avant
+                   if($request->hasFile('img_piece_avant'))
+                   {
+                    $livreur->addMediaFromRequest('img_piece_avant')
+                       ->toMediaCollection('img_piece_avant');
+                   }
+           
+                    //ajout de la piece arriere
+                    if($request->hasFile('img_piece_arriere'))
+                    {
+                        $livreur->addMediaFromRequest('img_piece_arriere')
+                        ->toMediaCollection('img_piece_arriere');
+                    }
+                }
 
                 return response()->json([
                     'message'=>'profil ajouté avec success',
@@ -135,7 +138,6 @@ class ProfilController extends Controller
         //
     
         $image_profil = Livreur::find($request->id);
-        // $image_profil_id  = $image_profil ->id;
             if (Auth::user()->id == $request->id ) {
                 //ajout de photo de profil
                 if($request->hasFile('img_profil'))
@@ -231,12 +233,14 @@ class ProfilController extends Controller
 
                if ($profil_update=Profil::findOrFail($request->id)) {
 
-                   $profil_update->clearMediaCollection('img_piece_avant');
-                   $profil_update->addMediaFromRequest('img_piece_avant')
+                $livreur_piece= Livreur::whereId(Auth::user()->id)->first();
+
+                $livreur_piece->clearMediaCollection('img_piece_avant');
+                $livreur_piece->addMediaFromRequest('img_piece_avant')
                    ->toMediaCollection('img_piece_avant');
 
-                   $profil_update->clearMediaCollection('img_piece_arriere');
-                   $profil_update->addMediaFromRequest('img_piece_arriere')
+                   $livreur_piece->clearMediaCollection('img_piece_arriere');
+                   $livreur_piece->addMediaFromRequest('img_piece_arriere')
                    ->toMediaCollection('img_piece_arriere');
                }
       
