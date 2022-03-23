@@ -137,8 +137,8 @@ class ProfilController extends Controller
     {
         //
     
-        $image_profil = Livreur::find($request->id);
-            if (Auth::user()->id == $request->id ) {
+        $image_profil = Livreur::find(Auth::user()->id );
+            // if (Auth::user()->id == $request->id ) {
                 //ajout de photo de profil
                 if($request->hasFile('img_profil'))
                 {
@@ -149,9 +149,9 @@ class ProfilController extends Controller
                     'message'=>'profil ajouté avec success',
                     $image_profil
                 ],200);
-            } elseif(Auth::user()->id != $request->id) {
-               return response()->json('Vous n\'êtes pas connecté ou profil existe déjà');
-            }
+            // } elseif(Auth::user()->id != $request->id) {
+            //    return response()->json('Vous n\'êtes pas connecté ou profil existe déjà');
+            // }
             
         
      
@@ -189,8 +189,8 @@ class ProfilController extends Controller
     public function updatePhotoProfil(Request $request)
     {
 
-        $imageProfil_update = Livreur::find($request->id);
-            if (Auth::user()->id ==  $request->id ) {
+        $imageProfil_update = Livreur::find(Auth::user()->id );
+            // if (Auth::user()->id ==  $request->id ) {
                 //ajout de photo de profil
                 if($request->hasFile('img_profil'))
                 {
@@ -202,9 +202,9 @@ class ProfilController extends Controller
                     'message'=>'MODIFI2 AVEC SUCCESS',
                     $imageProfil_update
                 ],200);
-            } elseif(Auth::user()->id != $request->id) {
-               return response()->json('Vous n\'êtes pas connecté ou profil existe déjà');
-            } 
+            // } elseif(Auth::user()->id != $request->id) {
+            //    return response()->json('Vous n\'êtes pas connecté ou profil existe déjà');
+            // } 
   
     }
 
