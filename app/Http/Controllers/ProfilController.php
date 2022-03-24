@@ -199,7 +199,7 @@ class ProfilController extends Controller
                    ->toMediaCollection('img_profil');
                 }
              return response()->json([
-                    'message'=>'MODIFI2 AVEC SUCCESS',
+                    'message'=>'MODIFIE AVEC SUCCESS',
                     $imageProfil_update
                 ],200);
             // } elseif(Auth::user()->id != $request->id) {
@@ -225,7 +225,7 @@ class ProfilController extends Controller
         ]);
 //
    if (auth()->check()) {
-       $profil_update=Profil::findOrFail($request->id)->update([
+       $profil_update=Profil::findOrFail(Auth::user()->id)->update([
             'type_piece' =>$request->type_piece,
             'numero_piece' => $request->numero_piece,
             'livreur_id' => Auth::user()->id,
