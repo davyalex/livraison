@@ -135,7 +135,7 @@ class EnginController extends Controller
                      
                  ]);
         //
-            if (auth()->check()) {
+            // if (auth()->check()) {
                 $engin_update=Engin::find($request->id)->update([
                     'type_engin' => Auth::user()->engin,
                     'immatriculation' => $request->immatriculation,
@@ -154,11 +154,12 @@ class EnginController extends Controller
         
                 return response()->json([
                 $engin_update,
+                Auth::user()->id,
                 'modifié avec success'
                     ]);
-            } else {
-                return response()->json('Vous n\'êtes pas connecté');
-            }
+            // } else {
+            //     return response()->json('Vous n\'êtes pas connecté');
+            // }
             
        
     }
