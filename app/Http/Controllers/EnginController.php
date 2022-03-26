@@ -154,7 +154,6 @@ class EnginController extends Controller
         
                 return response()->json([
                 $engin_update,
-                Auth::user()->id,
                 'modifié avec success'
                     ]);
             // } else {

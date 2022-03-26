@@ -225,7 +225,7 @@ class ProfilController extends Controller
         ]);
 //
    if (auth()->check()) {
-       $profil_update=Profil::findOrFail(Auth::user()->id)->update([
+       $profil_update=Profil::findOrFail($request->id)->update([
             'type_piece' =>$request->type_piece,
             'numero_piece' => $request->numero_piece,
             'livreur_id' => Auth::user()->id,
