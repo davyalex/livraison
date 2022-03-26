@@ -68,7 +68,7 @@ class EnginController extends Controller
         ->orWhere('livreur_id',Auth::user()->id)->first();
             if (auth()->check() AND !$engin_existe ) {
                 $engin = Engin::create([
-                    // 'type_engin' =>Auth::user()->engin,
+                    'type_engin' =>Auth::user()->engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
@@ -137,7 +137,7 @@ class EnginController extends Controller
         //
             if (auth()->check()) {
                 $engin_update=Engin::find($request->id)->update([
-                    // 'type_engin' => $request->type_engin,
+                    'type_engin' => Auth::user()->engin,
                     'immatriculation' => $request->immatriculation,
                     'livreur_id' => Auth::user()->id,
                 ]);
