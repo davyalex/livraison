@@ -43,12 +43,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
   //route pour creer un livreur(enregistrer un livreur)
  Route::post('/livreur/store', 'App\Http\Controllers\LivreurController@store')->name('store');
  
+
+ //route pour afficher le nombre de vue de l'annonce d'un livreur ====>(request->id): envoi de l'id du livreur connecté depuis le front-end;
+ Route::post('/livreur/vue', 'App\Http\Controllers\LivreurController@vue')->name('vue');
+
  Route::middleware(['auth:sanctum'])->group(function () {
  
  //route pour afficher les information de base du livreur  sur son dashboard
      Route::get('/livreur/index', 'App\Http\Controllers\LivreurController@index')->name('index');
  
- //route pour ajouter sa position actuelle ====>(request->id): envoi de l'id du livreur connecté epuis le front-end;
+ //route pour ajouter sa position actuelle ====>(request->id): envoi de l'id du livreur connecté depuis le front-end;
      Route::post('/livreur/position', 'App\Http\Controllers\LivreurController@position')->name('position');
  
  //route pour modifier ses informations ====>(request->id): envoi de l'id du livreur connecté;

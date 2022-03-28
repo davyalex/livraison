@@ -98,6 +98,19 @@ class LivreurController extends Controller
 
     }
 
+
+    public function vue(Request $request){
+                $nombreDeVue = Livreur::whereId($request->id)->get();
+              
+                foreach ($nombreDeVue as $click) {
+                    $click->increment('nombre_de_vue');
+                  
+                }
+              
+
+                return response()->json( $click->nombre_de_vue);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
