@@ -108,7 +108,7 @@ class LivreurController extends Controller
                 }
               
 
-                return response()->json( $click->nombre_de_vue);
+                return response()->json($click);
     }
 
     /**

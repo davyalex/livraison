@@ -1,9 +1,23 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-//api deployé sur heroku
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
 
-//Lien:https://app-moli-api.herokuapp.com/api/
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 
 
 /**
@@ -29,12 +43,16 @@
   //route pour creer un livreur(enregistrer un livreur)
  Route::post('/livreur/store', 'App\Http\Controllers\LivreurController@store')->name('store');
  
+
+ //route pour afficher le nombre de vue de l'annonce d'un livreur ====>(request->id): envoi de l'id du livreur connecté depuis le front-end;
+ Route::post('/livreur/vue', 'App\Http\Controllers\LivreurController@vue')->name('vue');
+
  Route::middleware(['auth:sanctum'])->group(function () {
  
  //route pour afficher les information de base du livreur  sur son dashboard
      Route::get('/livreur/index', 'App\Http\Controllers\LivreurController@index')->name('index');
  
- //route pour ajouter sa position actuelle ====>(request->id): envoi de l'id du livreur connecté epuis le front-end;
+ //route pour ajouter sa position actuelle ====>(request->id): envoi de l'id du livreur connecté depuis le front-end;
      Route::post('/livreur/position', 'App\Http\Controllers\LivreurController@position')->name('position');
  
  //route pour modifier ses informations ====>(request->id): envoi de l'id du livreur connecté;
@@ -95,3 +113,57 @@
  Route::post('/profil/updatePiece', 'App\Http\Controllers\ProfilController@updatePiece')->name('profil.updatePiece');
      
      });
+
+
+
+
+
+
+
+
+// //route authentification
+// Route::post('/login', 'App\Http\Controllers\AuthController@login')->name('login');
+// Route::post('/logout', 'App\Http\Controllers\AuthController@logout')->name('logout')->middleware('auth:sanctum');
+
+
+
+
+// //route pour livreur
+// //route pour afficher la liste des livreurs
+
+// Route::get('/livreur/liste', 'App\Http\Controllers\LivreurController@liste')->name('livreur.liste');
+// Route::post('/livreur/store', 'App\Http\Controllers\LivreurController@store')->name('store');
+// Route::middleware(['auth:sanctum'])->group(function () {
+    
+// Route::get('/livreur/index', 'App\Http\Controllers\LivreurController@index')->name('index');
+// Route::post('/livreur/position', 'App\Http\Controllers\LivreurController@position')->name('position');
+// Route::post('/livreur/update', 'App\Http\Controllers\LivreurController@update')->name('update');
+
+// });
+
+
+
+
+
+// //route infos engin du livreur
+// Route::middleware(['auth:sanctum'])->group(function () {
+    
+// Route::get('/engin/index', 'App\Http\Controllers\EnginController@index')->name('engin.index');
+// Route::post('/engin/store', 'App\Http\Controllers\EnginController@store')->name('engin.store');
+// Route::post('/engin/update', 'App\Http\Controllers\EnginController@update')->name('engin.update');
+
+// });
+
+
+// //route infos profil
+// Route::middleware(['auth:sanctum'])->group(function () {
+    
+//     Route::get('/profil/index', 'App\Http\Controllers\ProfilController@index')->name('profil.index');
+//     Route::post('/profil/store', 'App\Http\Controllers\ProfilController@store')->name('profil.store');
+//     Route::post('/profil/update', 'App\Http\Controllers\ProfilController@update')->name('profil.update');
+    
+//     });
+
+
+
+    
