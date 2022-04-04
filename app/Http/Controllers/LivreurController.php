@@ -104,10 +104,7 @@ class LivreurController extends Controller
               
                 foreach ($nombreDeVue as $click) {
                     $click->increment('nombre_de_vue');
-                  
                 }
-              
-
                 return response()->json($click);
     }
 
