@@ -1,0 +1,4 @@
+# rsync -av ./ tousfrai@ftp.tousfrais.ci:~/tousfrais.ci/moli/api --exclude '.git' --exclude '.vscodev' 
+
+rsync -av ./ moli@tousfrais.ci@ftp.tousfrais.ci:~/api --exclude '.git' --exclude '.vscodev' 
+

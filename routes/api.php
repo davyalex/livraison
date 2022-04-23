@@ -58,6 +58,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  //route pour modifier ses informations ====>(request->id): envoi de l'id du livreur connecté;
      Route::post('/livreur/update', 'App\Http\Controllers\LivreurController@update')->name('update');
  
+
+     //route pour modifier son mot de passe ====>($request->ancien_password, $request->nouveau_password);
+
+     Route::post('/livreur/passwordReset', 'App\Http\Controllers\LivreurController@passwordReset')->name('passwordReset');
+ 
  });
  
  

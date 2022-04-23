@@ -259,6 +259,27 @@ class LivreurController extends Controller
                  ]);
     }
 
+
+public function passwordReset(Request $request){
+        $data = $request->validate([
+            'ancien_password'=>'required',
+            'nouveau_password'=>'required'
+        ]);
+
+            $password_exist = Livreur::whereId(Auth::user()->id)->first();
+            $password_exist =     $password_exist->password;
+        if (Hash::check($request->ancien_password, $password_exist)) {
+            $password_reset = Livreur::find(Auth::user()->id)->update(['password'=>Hash::make($request->nouveau_password)]);
+            return response()->json(['message'=>'Votre mot de passe changé avec success']);
+        } else {
+            return response()->json(['error'=>'L\'ancien mot de passe entré est incorrect ']);
+        }
+        
+
+}
+
+    
+
     /**
      * Remove the specified resource from storage.
      *
