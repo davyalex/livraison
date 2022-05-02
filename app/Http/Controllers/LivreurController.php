@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Engin;
 use App\Models\Profil;
 use App\Models\Livreur;
+use App\Models\Abonnement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -156,10 +158,27 @@ class LivreurController extends Controller
             ]);
             $token = $livreur->createToken('auth_token')->plainTextToken;
 
+                if ($livreur) {
+                    $date_final =  Carbon::now()->addMonth(1);
+                    $date_debut = Carbon::now();
+                   $abonnement = Abonnement::create([
+                    'durée'=>30,
+                    'tva'=>0,
+                    'montant_ttc'=>0,
+                    'date_debut'=>$date_debut,
+                    'date_fin'=>$date_final,
+                    'livreur_id'=> $livreur->id,
+                    'pack_id'=>2,
+                   ]);
+                }
+
+
                 return response()->json([
                     'livreur enregistré avec success',
+                    'abonnement'=>$abonnement,
                     $token
             ]);
+
                 
     }
 
@@ -270,11 +289,30 @@ public function passwordReset(Request $request){
             $password_exist =     $password_exist->password;
         if (Hash::check($request->ancien_password, $password_exist)) {
             $password_reset = Livreur::find(Auth::user()->id)->update(['password'=>Hash::make($request->nouveau_password)]);
-            return response()->json(['message'=>'Votre mot de passe changé avec success']);
+            return response()->json(['success'=>'Votre mot de passe changé avec success']);
         } else {
             return response()->json(['error'=>'L\'ancien mot de passe entré est incorrect ']);
         }
         
+
+}
+
+
+public function passwordForget(Request $request){
+    $data = $request->validate([
+        'contact'=>'required',
+        'nouveau_password'=>'required'
+    ]);
+
+        $livreur = Livreur::first();
+        $contact_exist = $livreur->contact;
+    if ($contact_exist ===$request->contact) {
+        $password_new = Livreur::find($livreur->id)->update(['password'=>Hash::make($request->nouveau_password)]);
+        return response()->json(['success'=>'Votre mot a été reintialisé avec success']);
+    } else {
+        return response()->json(['error'=>'Le contact entré n\'existe pas ! veuillez un entrer un autre']);
+    }
+    
 
 }
 

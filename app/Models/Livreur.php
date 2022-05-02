@@ -2,19 +2,21 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
+use App\Models\Abonnement;
 // use Illuminate\Auth\Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Livreur extends Authenticatable implements HasMedia
 {
 
-   use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
+   use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia,SoftDeletes;
    
    protected $fillable = [
     'nom',
@@ -55,5 +57,15 @@ class Livreur extends Authenticatable implements HasMedia
     public function engin()
     {
         return $this->hasOne(Engin::class);
+    }
+
+     /**
+     * Get all of the comments for the Pack
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function abonnements()
+    {
+        return $this->hasMany(Abonnement::class);
     }
 }

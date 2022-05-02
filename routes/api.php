@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Pack;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  //route pour afficher le nombre de vue de l'annonce d'un livreur ====>(request->id): envoi de l'id du livreur connecté depuis le front-end;
  Route::post('/livreur/vue', 'App\Http\Controllers\LivreurController@vue')->name('vue');
 
+  //route pour modifier son mot de passe oublié ====>($request->contact, $request->nouveau_password);
+  Route::post('/livreur/passwordForget', 'App\Http\Controllers\LivreurController@passwordForget')->name('passwordForget');
+ 
+
+
+
  Route::middleware(['auth:sanctum'])->group(function () {
  
  //route pour afficher les information de base du livreur  sur son dashboard
@@ -60,9 +67,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  
 
      //route pour modifier son mot de passe ====>($request->ancien_password, $request->nouveau_password);
-
      Route::post('/livreur/passwordReset', 'App\Http\Controllers\LivreurController@passwordReset')->name('passwordReset');
  
+
+
  });
  
  
@@ -119,6 +127,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
      
      });
 
+
+
+     /**route pour la gestion de packs */
+     Route::post('/pack/liste', 'App\Http\Controllers\PackController@index');
+     Route::post('/pack/store', 'App\Http\Controllers\PackController@store');
+
+   
 
 
 
